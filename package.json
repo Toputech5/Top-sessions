@@ -1,0 +1,14 @@
+{
+  "name": "new-md-session",
+  "version": "1.0.0",
+  "description": "Session Generator for NEW-MD",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.5",
+    "pino": "^8.0.0"
+  }
+}
