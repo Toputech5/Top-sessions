@@ -16,15 +16,36 @@ const { state, saveCreds } = await useMultiFileAuthState("./auth")
 
 const sock = makeWASocket({
 logger: pino({ level: "silent" }),
-auth: state
+auth: state,
+printQRInTerminal: false
+})
+
+sock.ev.on("connection.update", async (update) => {
+
+const { connection } = update
+
+if (connection === "open") {
+console.log("✅ WhatsApp Connected")
+}
+
 })
 
 rl.question("Enter WhatsApp number (255xxxxxxxxx): ", async (number) => {
 
-const code = await sock.requestPairingCode(number)
+try {
 
-console.log("\nPAIRING CODE:\n")
+const cleanNumber = number.replace(/[^0-9]/g, "")
+
+const code = await sock.requestPairingCode(cleanNumber)
+
+console.log("\n🔑 PAIRING CODE:\n")
 console.log(code)
+
+} catch (err) {
+
+console.log("❌ Failed to generate pairing code")
+
+}
 
 })
 
@@ -36,7 +57,7 @@ const creds = fs.readFileSync("./auth/creds.json")
 
 const session = "NEW-MD;;;=>" + Buffer.from(creds).toString("base64")
 
-console.log("\nSESSION_ID:\n")
+console.log("\n📌 SESSION_ID:\n")
 console.log(session)
 
 })
