@@ -2,6 +2,8 @@ import makeWASocket, { useMultiFileAuthState } from "@whiskeysockets/baileys"
 import pino from "pino"
 import fs from "fs"
 
+let sessionGenerated = false
+
 async function startQR() {
 
 if (!fs.existsSync("./auth")) fs.mkdirSync("./auth")
@@ -14,19 +16,23 @@ auth: state,
 printQRInTerminal: true
 })
 
-sock.ev.on("connection.update", async (update) => {
+sock.ev.on("connection.update", ({ connection }) => {
 
-const { connection } = update
+if (connection === "connecting") {
+console.log("🔗 Connecting to WhatsApp...")
+}
 
 if (connection === "open") {
-
 console.log("✅ WhatsApp Connected Successfully")
-
 }
 
 })
 
 sock.ev.on("creds.update", async () => {
+
+if (sessionGenerated) return
+
+sessionGenerated = true
 
 await saveCreds()
 
@@ -39,7 +45,9 @@ const session = "NEW-MD;;;=>" + Buffer.from(creds).toString("base64")
 console.log("\n📌 SESSION_ID:\n")
 console.log(session)
 
-} catch (err) {
+console.log("\n💾 Copy this SESSION_ID to your bot config")
+
+} catch {
 
 console.log("❌ Failed to generate SESSION_ID")
 
