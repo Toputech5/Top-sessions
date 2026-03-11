@@ -1,13 +1,17 @@
 {
-"name": "top-sessions",
-"version": "1.0.0",
-"type": "module",
-"scripts": {
-"qr": "node qr.js",
-"pair": "node pair.js"
-},
-"dependencies": {
-"@whiskeysockets/baileys": "^6.7.5",
-"pino": "^8.16.0"
-}
+  "name": "top-sessions",
+  "version": "1.0.0",
+  "description": "WhatsApp Session Generator for NEW-MD Bot",
+  "main": "pair.js",
+  "type": "module",
+  "scripts": {
+    "qr": "node qr.js",
+    "pair": "node pair.js"
+  },
+  "author": "Toputech5",
+  "license": "MIT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.5",
+    "pino": "^8.16.0"
+  }
 }
