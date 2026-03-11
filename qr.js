@@ -14,10 +14,14 @@ auth: state,
 printQRInTerminal: true
 })
 
-sock.ev.on("connection.update", ({ connection }) => {
+sock.ev.on("connection.update", async (update) => {
+
+const { connection } = update
 
 if (connection === "open") {
-console.log("✅ WhatsApp Connected via QR")
+
+console.log("✅ WhatsApp Connected Successfully")
+
 }
 
 })
@@ -26,12 +30,20 @@ sock.ev.on("creds.update", async () => {
 
 await saveCreds()
 
+try {
+
 const creds = fs.readFileSync("./auth/creds.json")
 
 const session = "NEW-MD;;;=>" + Buffer.from(creds).toString("base64")
 
-console.log("\nSESSION_ID:\n")
+console.log("\n📌 SESSION_ID:\n")
 console.log(session)
+
+} catch (err) {
+
+console.log("❌ Failed to generate SESSION_ID")
+
+}
 
 })
 
