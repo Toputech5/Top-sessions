@@ -1,8 +1,14 @@
 import makeWASocket, { useMultiFileAuthState } from "@whiskeysockets/baileys"
 import pino from "pino"
 import fs from "fs"
+import readline from "readline"
 
-async function start() {
+const rl = readline.createInterface({
+input: process.stdin,
+output: process.stdout
+})
+
+async function startPair() {
 
 if (!fs.existsSync("./auth")) fs.mkdirSync("./auth")
 
@@ -10,8 +16,16 @@ const { state, saveCreds } = await useMultiFileAuthState("./auth")
 
 const sock = makeWASocket({
 logger: pino({ level: "silent" }),
-auth: state,
-printQRInTerminal: true
+auth: state
+})
+
+rl.question("Enter WhatsApp number (255xxxxxxxxx): ", async (number) => {
+
+const code = await sock.requestPairingCode(number)
+
+console.log("\nPAIRING CODE:\n")
+console.log(code)
+
 })
 
 sock.ev.on("creds.update", async () => {
@@ -29,4 +43,4 @@ console.log(session)
 
 }
 
-start()
+startPair()
