@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Pairing Code</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .container {
+    background: #222;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+  }
+  h1 { color: #0f0; }
+  .code {
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #0ff;
+    letter-spacing: 3px;
+  }
+  p {
+    color: #ccc;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>WhatsApp Pairing Code</h1>
+  <div id="pairCode" class="code">Loading...</div>
+  <p>Open WhatsApp → Linked Devices → Link a Device → Enter this code</p>
+</div>
+
+<script>
+// Fetch pairing code from your Node.js server
+fetch('/pairing')  // Node.js endpoint returning the code
+  .then(res => res.text())
+  .then(code => {
+    document.getElementById('pairCode').textContent = code;
+  })
+  .catch(() => {
+    document.getElementById('pairCode').textContent = "Error fetching code";
+  });
+</script>
+</body>
+</html>
